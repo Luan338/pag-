@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    background: black;
+}
+
+.BoxHeader{
+    color: white;
+    background: black;
+    height: 5vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 1vw;
+}
+
+.BoxList{
+    margin-right: 58%;
+    width: 28%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    font-size: 1.1vw;
+}
+
+.List{
+    color: white;
+}
+.List:hover{
+    opacity: 0.5;
+}
+
+.Logo{
+    width: 90px;
+}
+
+.BoxImgs{
+    width: 100%;
+    display: flex;
+}

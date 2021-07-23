@@ -1,6 +1,22 @@
 // imports
 import React, { Component } from "react";
 import axios from "axios";
+import styled, { createGlobalStyle } from "styled-components";
+
+//Estilização
+
+const BoxInput = styled.div`
+height: 8vw;
+display: flex;
+justify-content: center;
+align-items: center;
+`;
+
+const Input = styled.input`
+padding: 10px 355px;
+border-style: none;
+background: #512e8b;
+`;
 
 // url base da API que estamos consumindo
 const MoviesApi = axios.create({
@@ -9,7 +25,8 @@ const MoviesApi = axios.create({
 
 class Movies extends Component {
   state = {
-    movies: []
+    movies: [],
+    filterList: []
   };
 
   // Invoca imediatamente após um componente ser montado
@@ -30,19 +47,42 @@ class Movies extends Component {
     });
 
     this.setState({
-      movies: completeMovies
+      movies: completeMovies,
+      filterList: completeMovies
     });
   };
+
+  handleChange = (event) => {
+    const { movies } = this.state;
+    if(event.target.value === ""){
+      this.setState({
+        filterList: movies
+      })
+      return; 
+    }
+    const filterItensConvert = movies.filter((item) => {
+      if(item.title.toLowerCase().includes(event.target.value.toLowerCase())){
+        return true;
+      }
+      return false;
+    })
+    this.setState({
+      filterList: filterItensConvert
+    })
+  }
 
   render() {
     return (
       <section>
-        <div>
-          <h2>FILMES</h2>
-        </div>
+        <BoxInput>
+          <Input type="text" 
+          placeholder="Busque seu filme..." 
+          onChange={this.handleChange}
+          />
+        </BoxInput>
 
         <div>
-          {this.state.movies.map((item, id) => (
+          {this.state.filterList.map((item, id) => (
             <div key={id}>
               <img src={item.poster_path} alt="" />
               <p>{item.title}</p>

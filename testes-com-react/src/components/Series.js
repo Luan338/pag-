@@ -1,6 +1,23 @@
 // imports
 import React, { Component } from "react";
 import axios from "axios";
+import styled, { createGlobalStyle } from "styled-components";
+
+//Estilização
+
+const BoxInput = styled.div`
+height: 8vw;
+display: flex;
+justify-content: center;
+align-items: center;
+`;
+
+const Input = styled.input`
+padding: 10px 355px;
+border-style: none;
+background: #512e8b;
+`;
+
 
 // url base da API que estamos consumindo
 const SeriesApi = axios.create({
@@ -9,7 +26,8 @@ const SeriesApi = axios.create({
 
 class Series extends Component {
   state = {
-    series: []
+    series: [],
+    searchList: []
   };
 
   // Invoca imediatamente após um componente ser montado
@@ -30,19 +48,42 @@ class Series extends Component {
     });
 
     this.setState({
-      series: completeSeries
+      series: completeSeries,
+      searchList: completeSeries
     });
   };
+
+  handleChange = (event) => {
+    const { series } = this.state;
+    if(event.target.value === ""){
+      this.setState({
+        searchList: series
+      })
+      return;
+    }
+    const filterItemConvert = series.filter((item) => {
+      if(item.name.toLowerCase().includes(event.target.value.toLowerCase())){
+        return true;
+      }
+      return false;
+    })
+    this.setState({
+      searchList: filterItemConvert
+    })
+  }
 
   render() {
     return (
       <section>
-        <div>
-          <h2>SERIES</h2>
-        </div>
+        <BoxInput>
+          <Input type="text" 
+          placeholder="Busque sua série..."
+          onChange={this.handleChange}
+          />
+        </BoxInput>
 
         <div>
-          {this.state.series.map((item, id) => (
+          {this.state.searchList.map((item, id) => (
             <div key={id}>
               <img src={item.poster_path} alt="" />
               <p>{item.name}</p>
